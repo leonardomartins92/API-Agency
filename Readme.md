@@ -8,6 +8,8 @@ An API to save, read and delete datas from a Tourism Agency.
 
 * Spring Boot
 * MySQL
+* Junit 
+* Mockito
 
 ## Setup
  - MySQL local connection 
