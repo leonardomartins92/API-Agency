@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"cpf\": \"10187213\",\r\n    \"name\": \"Leo\",\r\n    \"contactData\": 1\r\n}",
+					"raw": "{\r\n    \"cpf\": \"101872139\",\r\n    \"name\": \"Leo\",\r\n    \"email\": \"leo@email\",\r\n    \"phone\": \"99123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -40,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"cnpj\": \"812737\",\r\n    \"name\": \"TAM\",\r\n    \"contactData\": 1,\r\n    \"companyType\": \"HOTEL\"\r\n\r\n}",
+					"raw": "{\r\n    \"cnpj\": \"8122737\",\r\n    \"name\": \"TAM\",\r\n    \"companyType\": \"HOTEL\"\r\n\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -68,7 +68,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"start\": \"2021-02-05\",\r\n    \"end\": \"2021-03-06\",\r\n    \"tourPackage\": 1,\r\n    \"company\": 1,\r\n    \"location\": \"Barcelona\"\r\n}",
+					"raw": "{\r\n    \"start\": \"2021-02-05\",\r\n    \"end\": \"2021-03-06\",\r\n    \"location\": \"Barcelona\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -96,7 +96,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"origin\": \"Rio de Janeiro\",\r\n    \"destination\": \"Londres\",\r\n    \"departureDate\": \"2021-01-01\",\r\n    \"arriveDate\": \"2021-02-01\",\r\n    \"tourPackage\": 1,\r\n    \"company\": 1\r\n}",
+					"raw": "{\r\n    \"origin\": \"Rio de Janeiro\",\r\n    \"destination\": \"Londres\",\r\n    \"departureDate\": \"2021-01-01\",\r\n    \"arriveDate\": \"2021-02-01\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

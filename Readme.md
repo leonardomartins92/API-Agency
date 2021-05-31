@@ -15,4 +15,4 @@ An API to save, read and delete datas from a Tourism Agency.
  - MySQL local connection 
 
 ## Manual Test
-[Postman File](https://github.com/leonardomartins92/REST-API-Tourism-Agency-SPRINGBOOT/blob/main/documentos/API-Turismo.postman_collection.json)
+[Postman File](https://github.com/leonardomartins92/REST-API-Tourism-Agency-SPRINGBOOT/blob/main/postman/API-Turismo.postman_collection.json)
