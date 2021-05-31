@@ -4,6 +4,8 @@ import com.spring.voluptuaria.dto.DestinationDTO;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Destination;
 import com.spring.voluptuaria.util.DestinationDTOCreator;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -31,7 +35,9 @@ class DestinationRepositoryTest {
         Destination destinationSaved = mapper.destinationToModel(destinationToSave);
 
         var savedDestination = destinationRepository.save(destinationSaved);
-        Assertions.assertEquals(destinationToSave.getLocation(), savedDestination.getLocation());
+
+        assertThat(savedDestination.getLocation(), is(equalTo(destinationToSave.getLocation())));
+
     }
 
     @Test
@@ -42,7 +48,9 @@ class DestinationRepositoryTest {
 
         destinationRepository.delete(destinationSaved);
         Optional<Destination> destination = destinationRepository.findById(destinationSaved.getId());
-        assertEquals(Optional.empty(), destination);
+
+        assertThat(destination, is(equalTo(Optional.empty())));
+
     }
 
     @Test
@@ -53,7 +61,8 @@ class DestinationRepositoryTest {
 
         Optional<Destination> foundDestination = destinationRepository.findById(destinationSaved.getId());
 
-        assertEquals(destinationSaved, foundDestination.get());
+        assertThat(foundDestination.get(), is(equalTo(destinationSaved)));
+
     }
 
     @Test
@@ -63,7 +72,9 @@ class DestinationRepositoryTest {
         Destination destinationSaved = destinationRepository.save(mapper.destinationToModel(destinationToSave));
 
         List<Destination> companies = destinationRepository.findAll();
-        assertEquals(destinationSaved.getLocation(), companies.get(0).getLocation());
+
+        assertThat(companies.get(0).getLocation(), is(equalTo(destinationSaved.getLocation())));
+
     }
 
 }

@@ -7,7 +7,6 @@ import com.spring.voluptuaria.model.Company;
 import com.spring.voluptuaria.repository.CompanyRepository;
 import com.spring.voluptuaria.util.CompanyDTOCreator;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +18,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 @Slf4j
 @DisplayName("Test Company Service")
@@ -44,8 +47,9 @@ class CompanyServiceTest {
 
         CompanyDTO companySaved = companyService.save(companyPassed);
 
-        Assertions.assertEquals(companySaved.getId(), companySaved.getId());
-        Assertions.assertEquals(companySaved.getName(), companySaved.getName());
+        assertThat(companySaved.getId(), is(equalTo(companySaved.getId())));
+        assertThat(companySaved.getName(), is(equalTo(companySaved.getName())));
+
     }
 
     @DisplayName("List all companies with success")
@@ -56,7 +60,9 @@ class CompanyServiceTest {
               .thenReturn(companys);
 
       var listedCompanys =  companyService.findAll();
-      Assertions.assertEquals(companys.get(0).getName(), listedCompanys.get(0).getName());
+
+      assertThat(listedCompanys.get(0).getName(),is(equalTo(companys.get(0).getName())));
+
     }
 
     @Test
@@ -68,7 +74,9 @@ class CompanyServiceTest {
                 .thenReturn(Optional.of(mapper.companyToModel(CompanyDTOCreator.buildCompany())));
 
         var companye = companyService.findById(ArgumentMatchers.any());
-        Assertions.assertEquals(expectedName, companye.getName());
+
+        assertThat(companye.getName(),is(equalTo(expectedName)));
+
     }
 
 

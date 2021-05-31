@@ -7,7 +7,6 @@ import com.spring.voluptuaria.model.Passage;
 import com.spring.voluptuaria.repository.PassageRepository;
 import com.spring.voluptuaria.util.PassageDTOCreator;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +18,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 @Slf4j
 @DisplayName("Test Passage Service")
@@ -44,8 +47,9 @@ class PassageServiceTest {
 
         PassageDTO passageSaved = passageService.save(passagePassed);
 
-        Assertions.assertEquals(passageSaved.getId(), passageSaved.getId());
-        Assertions.assertEquals(passageSaved.getDestination(), passageSaved.getDestination());
+        assertThat(passageSaved.getId(), is(equalTo(passageSaved.getId())));
+        assertThat(passageSaved.getDestination(), is(equalTo(passageSaved.getDestination())));
+
     }
 
     @DisplayName("List all passages with success")
@@ -56,7 +60,9 @@ class PassageServiceTest {
               .thenReturn(passages);
 
       var listedPassages =  passageService.findAll();
-      Assertions.assertEquals(passages.get(0).getDestination(), listedPassages.get(0).getDestination());
+
+      assertThat(listedPassages.get(0).getDestination(), is(equalTo(passages.get(0).getDestination())));
+
     }
 
     @Test
@@ -68,9 +74,9 @@ class PassageServiceTest {
                 .thenReturn(Optional.of(mapper.passageToModel(PassageDTOCreator.buildPassage())));
 
         var passage = passageService.findById(ArgumentMatchers.any());
-        Assertions.assertEquals(expectedName, passage.getDestination());
+
+        assertThat(passage.getDestination(), is(equalTo(expectedName)));
+
     }
-
-
 
 }

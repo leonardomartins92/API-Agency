@@ -4,7 +4,6 @@ import com.spring.voluptuaria.dto.ClientDTO;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Client;
 import com.spring.voluptuaria.util.ClientDTOCreator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 @DataJpaTest
 @DisplayName("Client Repository Test")
@@ -31,7 +32,9 @@ class ClientRepositoryTest {
         Client clientSaved = mapper.clientToModel(clientToSave);
 
         var savedClient = clientRepository.save(clientSaved);
-        Assertions.assertEquals(clientToSave.getCpf(), savedClient.getCpf());
+
+        assertThat(savedClient.getCpf(), is(equalTo(clientToSave.getCpf())));
+
     }
 
     @Test
@@ -42,30 +45,33 @@ class ClientRepositoryTest {
 
         clientRepository.delete(clientSaved);
         Optional<Client> cliente = clientRepository.findById(clientSaved.getId());
-        assertEquals(Optional.empty(), cliente);
+
+        assertThat(cliente, is(equalTo(Optional.empty())));
+
     }
 
     @Test
     @DisplayName("Find client by id")
     void findById_Cliente_ComSucesso()  {
         ClientDTO clientToSave = ClientDTOCreator.buildCliente();
-        Client clientSaved = mapper.clientToModel(clientToSave);
+        Client clientSaved = clientRepository.save(mapper.clientToModel(clientToSave));
 
-        Optional<Client> clienteEncontrado = clientRepository.findById(clientSaved.getId());
+        Optional<Client> foundClient = clientRepository.findById(clientSaved.getId());
 
-        assertEquals(clientSaved, clienteEncontrado.get());
+        assertThat(foundClient.get(), is(equalTo(clientSaved)));
+
     }
 
     @Test
     @DisplayName("find all clients ")
     void findAll_Clientes_ComSucesso() {
         ClientDTO clientToSave = ClientDTOCreator.buildCliente();
-        Client clientSaved = mapper.clientToModel(clientToSave);
+        Client clientSaved = clientRepository.save(mapper.clientToModel(clientToSave));
 
-        List<Client> clientesSalvos = List.of(clientSaved);
+        List<Client> foundClients = clientRepository.findAll();
 
-        List<Client> clientesEncontrados = clientRepository.findAll();
-        assertEquals(clientesSalvos, clientesEncontrados);
+        assertThat( foundClients.get(0), is(equalTo(clientSaved)));
+
     }
 
 }

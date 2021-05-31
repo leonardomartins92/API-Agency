@@ -7,7 +7,6 @@ import com.spring.voluptuaria.model.Client;
 import com.spring.voluptuaria.repository.ClientRepository;
 import com.spring.voluptuaria.util.ClientDTOCreator;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +18,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 @Slf4j
 @DisplayName("Test Client Service")
@@ -44,8 +47,9 @@ class ClientServiceTest {
 
         ClientDTO clientSaved = clientService.save(clientPassed);
 
-        Assertions.assertEquals(clientSaved.getId(), clientSaved.getId());
-        Assertions.assertEquals(clientSaved.getName(), clientSaved.getName());
+        assertThat(clientSaved.getId(), is(equalTo(clientSaved.getId())));
+        assertThat(clientSaved.getName(), is(equalTo(clientSaved.getName())));
+
     }
 
     @DisplayName("List all clients with success")
@@ -56,7 +60,8 @@ class ClientServiceTest {
               .thenReturn(clients);
 
       var listedClients =  clientService.findAll();
-      Assertions.assertEquals(clients.get(0).getName(), listedClients.get(0).getName());
+
+      assertThat(listedClients.get(0).getName(), is(equalTo(clients.get(0).getName())));
     }
 
     @Test
@@ -68,7 +73,8 @@ class ClientServiceTest {
                 .thenReturn(Optional.of(mapper.clientToModel(ClientDTOCreator.buildCliente())));
 
         var cliente = clientService.findById(ArgumentMatchers.any());
-        Assertions.assertEquals(expectedName, cliente.getName());
+
+        assertThat(cliente.getName(), is(equalTo(expectedName)));
     }
 
 

@@ -4,7 +4,6 @@ import com.spring.voluptuaria.dto.PassageDTO;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Passage;
 import com.spring.voluptuaria.util.PassageDTOCreator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -31,7 +33,9 @@ class PassageRepositoryTest {
         Passage passageSaved = mapper.passageToModel(passageToSave);
 
         var savedPassage = passageRepository.save(passageSaved);
-        Assertions.assertEquals(passageToSave.getDestination(), savedPassage.getDestination());
+
+        assertThat(savedPassage.getDestination(), is(equalTo(passageToSave.getDestination())));
+
     }
 
     @Test
@@ -42,7 +46,9 @@ class PassageRepositoryTest {
 
         passageRepository.delete(passageSaved);
         Optional<Passage> passage = passageRepository.findById(passageSaved.getId());
-        assertEquals(Optional.empty(), passage);
+
+        assertThat(passage, is(equalTo(Optional.empty())));
+
     }
 
     @Test
@@ -53,7 +59,8 @@ class PassageRepositoryTest {
 
         Optional<Passage> foundPassage = passageRepository.findById(passageSaved.getId());
 
-        assertEquals(passageSaved, foundPassage.get());
+        assertThat(foundPassage.get(), is(equalTo(passageSaved)));
+
     }
 
     @Test
@@ -63,7 +70,9 @@ class PassageRepositoryTest {
         Passage passageSaved = passageRepository.save(mapper.passageToModel(passageToSave));
 
         List<Passage> companies = passageRepository.findAll();
-        assertEquals(passageSaved.getDestination(), companies.get(0).getDestination());
+
+        assertThat(companies.get(0).getDestination(), is(equalTo(passageSaved.getDestination())));
+
     }
 
 }

@@ -13,6 +13,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -31,7 +34,9 @@ class CompanyRepositoryTest {
         Company companySaved = mapper.companyToModel(companyToSave);
 
         var savedCompany = companyRepository.save(companySaved);
-        Assertions.assertEquals(companyToSave.getCnpj(), savedCompany.getCnpj());
+
+        assertThat(savedCompany.getCnpj(), is(equalTo(companyToSave.getCnpj())));
+
     }
 
     @Test
@@ -42,7 +47,9 @@ class CompanyRepositoryTest {
 
         companyRepository.delete(companySaved);
         Optional<Company> company = companyRepository.findById(companySaved.getId());
-        assertEquals(Optional.empty(), company);
+
+        assertThat(company, is(equalTo(Optional.empty())));
+
     }
 
     @Test
@@ -53,7 +60,8 @@ class CompanyRepositoryTest {
 
         Optional<Company> foundCompany = companyRepository.findById(companySaved.getId());
 
-        assertEquals(companySaved, foundCompany.get());
+        assertThat(foundCompany.get(), is(equalTo(companySaved)));
+
     }
 
     @Test
@@ -63,7 +71,9 @@ class CompanyRepositoryTest {
         Company companySaved = companyRepository.save(mapper.companyToModel(companyToSave));
 
         List<Company> companies = companyRepository.findAll();
-        assertEquals(companySaved.getName(), companies.get(0).getName());
+
+        assertThat(companies.get(0).getName(), is(equalTo(companySaved.getName())));
+
     }
 
 }

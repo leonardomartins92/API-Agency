@@ -7,7 +7,6 @@ import com.spring.voluptuaria.model.Destination;
 import com.spring.voluptuaria.repository.DestinationRepository;
 import com.spring.voluptuaria.util.DestinationDTOCreator;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +18,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 @Slf4j
 @DisplayName("Test Destination Service")
@@ -44,8 +47,9 @@ class DestinationServiceTest {
 
         DestinationDTO destinationSaved = destinationService.save(destinationPassed);
 
-        Assertions.assertEquals(destinationSaved.getId(), destinationSaved.getId());
-        Assertions.assertEquals(destinationSaved.getLocation(), destinationSaved.getLocation());
+        assertThat(destinationSaved.getId(), is(equalTo(destinationSaved.getId())));
+        assertThat(destinationSaved.getLocation(), is(equalTo(destinationSaved.getLocation())));
+
     }
 
     @DisplayName("List all destinations with success")
@@ -56,7 +60,9 @@ class DestinationServiceTest {
               .thenReturn(destinations);
 
       var listedDestinations =  destinationService.findAll();
-      Assertions.assertEquals(destinations.get(0).getLocation(), listedDestinations.get(0).getLocation());
+
+      assertThat(listedDestinations.get(0).getLocation(), is(equalTo(destinations.get(0).getLocation())));
+
     }
 
     @Test
@@ -68,7 +74,9 @@ class DestinationServiceTest {
                 .thenReturn(Optional.of(mapper.destinationToModel(DestinationDTOCreator.buildDestination())));
 
         var destinatione = destinationService.findById(ArgumentMatchers.any());
-        Assertions.assertEquals(expectedName, destinatione.getLocation());
+
+        assertThat(destinatione.getLocation(), is(equalTo(expectedName)));
+
     }
 
 
