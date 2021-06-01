@@ -26,8 +26,7 @@ public class ClientService {
     }
 
     public ClientDTO findById(Long id) throws NotFoundException {
-        Client clientWithId = clientRepository.findById(id)
-                .orElseThrow(()->new NotFoundException(id));
+        Client clientWithId = verifyIfExists(id);
         return mapper.clientToDTO(clientWithId);
     }
 
@@ -36,7 +35,13 @@ public class ClientService {
         return mapper.clientToDTO(clientSaved);
     }
 
-    public void delete(ClientDTO clientDTO) throws NotFoundException {
-        clientRepository.delete(mapper.clientToModel(clientDTO));
+    public void delete(Long id) throws NotFoundException {
+        verifyIfExists(id);
+        clientRepository.deleteById(id);
+    }
+
+    private Client verifyIfExists(Long id) throws NotFoundException {
+        return clientRepository.findById(id)
+                .orElseThrow(()->new NotFoundException(id));
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Slf4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 public class ClientController {
@@ -20,27 +19,27 @@ public class ClientController {
     private final ClientService clientService;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @GetMapping(path = "/pesquisaClientes")
+    @GetMapping(path = "/api/v1/clients")
     public List<ClientDTO> listClients(){
         return clientService.findAll();
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @GetMapping(path = "/pesquisaCliente/{cod}")
+    @GetMapping(path = "/api/v1/clients/{cod}")
     public ClientDTO listClientById(@PathVariable Long cod ) throws NotFoundException {
        return clientService.findById(cod);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/manterCliente")
+    @PostMapping(path = "/api/v1/clients")
     public ClientDTO saveClient(@RequestBody @Valid ClientDTO clientDTO) throws NotFoundException {
       return clientService.save(clientDTO);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(path = "/manterCliente/{id}")
+    @DeleteMapping(path = "/api/v1/clients/{id}")
     public void deleteClient(@PathVariable Long id) throws NotFoundException {
-         clientService.delete(clientService.findById(id));
+         clientService.delete(id);
     }
 }
 

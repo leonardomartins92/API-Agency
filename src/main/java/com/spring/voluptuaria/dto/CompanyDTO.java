@@ -10,20 +10,23 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class CompanyDTO {
 
     private Long id;
 
-    @NotEmpty(message = "CNPJ field can not be empty")
+    @NotNull(message = "CNPJ field can not be empty")
+    @Size(max= 20)
     private String cnpj;
 
-    @NotEmpty(message = "Name field can not be empty")
+    @NotNull(message = "Name field can not be empty")
+    @Size(max = 40)
     private String name;
 
     @Enumerated(EnumType.STRING)

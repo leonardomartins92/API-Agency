@@ -1,38 +1,10 @@
 {
 	"info": {
-		"_postman_id": "c4deac4f-ceba-4a6e-bc51-d857de0cc6c7",
-		"name": "API-Turismo",
+		"_postman_id": "f03c0856-6573-42d7-a641-7a554a7fa317",
+		"name": "API DIO",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "Save Cliente",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"cpf\": \"101872139\",\r\n    \"name\": \"Leo\",\r\n    \"email\": \"leo@email\",\r\n    \"phone\": \"99123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/manterCliente",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"manterCliente"
-					]
-				}
-			},
-			"response": []
-		},
 		{
 			"name": "Save Empresa",
 			"request": {
@@ -48,14 +20,46 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/manterEmpresa",
+					"raw": "http://localhost:8080/api/v1/companies",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"manterEmpresa"
+						"api",
+						"v1",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Cliente",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cpf\": \"101872139\",\r\n    \"name\": \"Leo\",\r\n    \"email\": \"leo@email\",\r\n    \"phone\": \"99123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/clients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"clients"
 					]
 				}
 			},
@@ -76,14 +80,16 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/manterDestino",
+					"raw": "http://localhost:8080/api/v1/destinations",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"manterDestino"
+						"api",
+						"v1",
+						"destinations"
 					]
 				}
 			},
@@ -104,14 +110,16 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/manterPassagem",
+					"raw": "http://localhost:8080/api/v1/passages",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"manterPassagem"
+						"api",
+						"v1",
+						"passages"
 					]
 				}
 			},
@@ -123,14 +131,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/pesquisaClientes",
+					"raw": "http://localhost:8080/api/v1/clients",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pesquisaClientes"
+						"api",
+						"v1",
+						"clients"
 					]
 				}
 			},
@@ -142,14 +152,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/pesquisaEmpresas",
+					"raw": "http://localhost:8080/api/v1/companies",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pesquisaEmpresas"
+						"api",
+						"v1",
+						"companies"
 					]
 				}
 			},
@@ -161,14 +173,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/pesquisaPassagems",
+					"raw": "http://localhost:8080/api/v1/passages",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pesquisaPassagems"
+						"api",
+						"v1",
+						"passages"
 					]
 				}
 			},
@@ -180,14 +194,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/pesquisaDestinos",
+					"raw": "http://localhost:8080/api/v1/destinations",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pesquisaDestinos"
+						"api",
+						"v1",
+						"destinations"
 					]
 				}
 			},
@@ -199,14 +215,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/pesquisaCliente/1",
+					"raw": "http://localhost:8080/api/v1/clients/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pesquisaCliente",
+						"api",
+						"v1",
+						"clients",
 						"1"
 					]
 				}
@@ -219,14 +237,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/pesquisaEmpresa/1",
+					"raw": "http://localhost:8080/api/v1/companies/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pesquisaEmpresa",
+						"api",
+						"v1",
+						"companies",
 						"1"
 					]
 				}
@@ -239,14 +259,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/pesquisaDestino/1",
+					"raw": "http://localhost:8080/api/v1/destinations/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pesquisaDestino",
+						"api",
+						"v1",
+						"destinations",
 						"1"
 					]
 				}
@@ -259,14 +281,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/pesquisaPassagem/1",
+					"raw": "http://localhost:8080/api/v1/passages/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"pesquisaPassagem",
+						"api",
+						"v1",
+						"passages",
 						"1"
 					]
 				}
@@ -279,14 +303,16 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/manterPassagem/1",
+					"raw": "http://localhost:8080/api/v1/passages/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"manterPassagem",
+						"api",
+						"v1",
+						"passages",
 						"1"
 					]
 				}
@@ -299,14 +325,16 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/manterDestino/1",
+					"raw": "http://localhost:8080/api/v1/destinations/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"manterDestino",
+						"api",
+						"v1",
+						"destinations",
 						"1"
 					]
 				}
@@ -319,14 +347,16 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/manterEmpresa/1",
+					"raw": "http://localhost:8080/api/v1/companies/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"manterEmpresa",
+						"api",
+						"v1",
+						"companies",
 						"1"
 					]
 				}
@@ -339,14 +369,16 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/manterCliente/1",
+					"raw": "http://localhost:8080/api/v1/clients/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"manterCliente",
+						"api",
+						"v1",
+						"clients",
 						"1"
 					]
 				}

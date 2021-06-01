@@ -26,8 +26,7 @@ public class DestinationService {
     }
 
     public DestinationDTO findById(Long id) throws NotFoundException {
-        Destination destinationWithId = destinationRepository.findById(id)
-                .orElseThrow(()->new NotFoundException(id));
+        Destination destinationWithId = verifyIfExists(id);
         return mapper.destinationToDTO(destinationWithId);
     }
 
@@ -36,8 +35,15 @@ public class DestinationService {
         return mapper.destinationToDTO(destinationSaved);
     }
 
-    public void delete(DestinationDTO destinationDTO) throws NotFoundException {
-        destinationRepository.delete(mapper.destinationToModel(destinationDTO));
+    public void delete(Long id) throws NotFoundException {
+        verifyIfExists(id);
+        destinationRepository.deleteById(id);
     }
+
+    private Destination verifyIfExists(Long id) throws NotFoundException {
+        return destinationRepository.findById(id)
+                .orElseThrow(()->new NotFoundException(id));
+    }
+
 }
 

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -16,15 +18,19 @@ public class PassageDTO {
 
     private Long id;
 
-    @NotEmpty(message = "Origin field can not be empty")
+    @NotNull(message = "Origin field can not be empty")
+    @Size(max=20)
     private String origin;
 
-    @NotEmpty(message = "Destination field can not be empty")
+    @NotNull(message = "Destination field can not be empty")
+    @Size(max=30)
     private String destination;
 
-    @NotEmpty(message = "Departure Date field can not be empty")
+    @NotNull(message = "Departure Date field can not be empty")
+    @Size(max=15)
     private String departureDate;
 
+    @Size(max=15)
     private String arriveDate;
 
 

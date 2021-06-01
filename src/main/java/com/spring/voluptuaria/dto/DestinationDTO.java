@@ -6,22 +6,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class DestinationDTO {
 
     private Long id;
-    @NotEmpty(message = "Start field can not be empty")
+
+    @NotNull(message = "Start field can not be empty")
+    @Size(max=15)
     private String start;
 
-    @NotEmpty(message = "End field can not be empty")
+    @NotNull(message = "End field can not be empty")
+    @Size(max=15)
     private String end;
 
-    @NotEmpty(message = "Location field can not be empty")
+    @NotNull(message = "Location field can not be empty")
+    @Size(max=30)
     private String location;
 
 }

@@ -5,15 +5,11 @@ import com.spring.voluptuaria.exception.NotFoundException;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Passage;
 import com.spring.voluptuaria.repository.PassageRepository;
-import com.spring.voluptuaria.util.PassageDTOCreator;
-import lombok.extern.slf4j.Slf4j;
+import com.spring.voluptuaria.builder.PassageDTOCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -22,8 +18,9 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
-@Slf4j
 @DisplayName("Test Passage Service")
 @ExtendWith(SpringExtension.class)
 class PassageServiceTest {
@@ -34,7 +31,7 @@ class PassageServiceTest {
     @Mock
     private PassageRepository passageRepositoryMock;
 
-    private IMapper mapper = IMapper.INSTANCE;
+    private final IMapper mapper = IMapper.INSTANCE;
 
     @DisplayName("Save passage with success")
     @Test
@@ -42,7 +39,7 @@ class PassageServiceTest {
         PassageDTO passagePassed = PassageDTOCreator.buildPassage();
         Passage passageToBeSaved = mapper.passageToModel(passagePassed);
 
-        BDDMockito.when(passageRepositoryMock.save(ArgumentMatchers.any(Passage.class)))
+        Mockito.when(passageRepositoryMock.save(ArgumentMatchers.any(Passage.class)))
                 .thenReturn(passageToBeSaved);
 
         PassageDTO passageSaved = passageService.save(passagePassed);
@@ -56,7 +53,8 @@ class PassageServiceTest {
     @Test
     void listAll_Passages_ComSucesso(){
       List<Passage> passages = List.of(mapper.passageToModel(PassageDTOCreator.buildPassage()));
-      BDDMockito.when(passageRepositoryMock.findAll())
+
+      Mockito.when(passageRepositoryMock.findAll())
               .thenReturn(passages);
 
       var listedPassages =  passageService.findAll();
@@ -70,13 +68,35 @@ class PassageServiceTest {
     void getPassage_ById_WithSuccess() throws NotFoundException {
         String expectedName = PassageDTOCreator.buildPassage().getDestination();
 
-        BDDMockito.when(passageRepositoryMock.findById(ArgumentMatchers.any()))
+        Mockito.when(passageRepositoryMock.findById(ArgumentMatchers.any()))
                 .thenReturn(Optional.of(mapper.passageToModel(PassageDTOCreator.buildPassage())));
 
         var passage = passageService.findById(ArgumentMatchers.any());
 
         assertThat(passage.getDestination(), is(equalTo(expectedName)));
 
+    }
+
+    @Test
+    @DisplayName("Not Found Passage With Id")
+    void passageNotFoundWithID_ThrownException()  {
+
+        assertThrows(NotFoundException.class, ()-> passageService.findById(ArgumentMatchers.any()));
+    }
+
+    @Test
+    @DisplayName("Delete Passage with a valid Id")
+    void deletePassageWhenAValidIdIsPassed() throws NotFoundException {
+
+        Passage expectedDeletedPassage = mapper.passageToModel(PassageDTOCreator.buildPassage());
+
+        when(passageRepositoryMock.findById(expectedDeletedPassage.getId()))
+                .thenReturn(Optional.of(expectedDeletedPassage));
+
+        passageService.delete(expectedDeletedPassage.getId());
+
+        verify(passageRepositoryMock, times(1)).findById(expectedDeletedPassage.getId());
+        verify(passageRepositoryMock, times(1)).deleteById(expectedDeletedPassage.getId());
     }
 
 }

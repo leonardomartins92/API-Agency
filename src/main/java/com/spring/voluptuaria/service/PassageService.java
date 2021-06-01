@@ -26,8 +26,7 @@ public class PassageService {
     }
 
     public PassageDTO findById(Long id) throws NotFoundException {
-        Passage passageWithId = passageRepository.findById(id)
-                .orElseThrow(()->new NotFoundException(id));
+        Passage passageWithId = verifyIfExists(id);
         return mapper.passageToDTO(passageWithId);
     }
 
@@ -36,7 +35,13 @@ public class PassageService {
         return mapper.passageToDTO(passageSaved);
     }
 
-    public void delete(PassageDTO passageDTO) throws NotFoundException {
-        passageRepository.delete(mapper.passageToModel(passageDTO));
+    public void delete(Long id) throws NotFoundException {
+        verifyIfExists(id);
+        passageRepository.deleteById(id);
+    }
+
+    private Passage verifyIfExists(Long id) throws NotFoundException {
+        return passageRepository.findById(id)
+                .orElseThrow(()->new NotFoundException(id));
     }
 }

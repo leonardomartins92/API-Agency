@@ -26,8 +26,7 @@ public class CompanyService {
     }
 
     public CompanyDTO findById(Long id) throws NotFoundException {
-        Company companyWithId = companyRepository.findById(id)
-                .orElseThrow(()->new NotFoundException(id));
+        Company companyWithId = verifyIfExists(id);
         return mapper.companyToDTO(companyWithId);
     }
 
@@ -36,7 +35,13 @@ public class CompanyService {
         return mapper.companyToDTO(companySaved);
     }
 
-    public void delete(CompanyDTO companyDTO) throws NotFoundException {
-        companyRepository.delete(mapper.companyToModel(companyDTO));
+    public void delete(Long id) throws NotFoundException {
+        verifyIfExists(id);
+        companyRepository.deleteById(id);
+    }
+
+    private Company verifyIfExists(Long id) throws NotFoundException {
+        return companyRepository.findById(id)
+                .orElseThrow(()->new NotFoundException(id));
     }
 }

@@ -5,8 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -17,16 +18,20 @@ public class ClientDTO {
 
     private Long id;
 
-    @NotEmpty(message = "CPF field can not be empty")
+    @NotNull(message = "CPF field can not be empty")
+    @Size(max = 15)
     private String cpf;
 
-    @NotEmpty(message = "Name field can not be empty")
+    @NotNull(message = "Name field can not be empty")
+    @Size(max=200)
     private String name;
 
-    @NotEmpty(message = "Phone field can not be empty")
+    @NotNull(message = "Phone field can not be empty")
+    @Size(max=15)
     private String phone;
 
-    @NotEmpty(message = "Email field can not be empty")
+    @NotNull(message = "Email field can not be empty")
+    @Size(max=30)
     private String email;
 
 }
