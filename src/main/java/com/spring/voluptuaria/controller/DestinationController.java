@@ -12,32 +12,40 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/api/v1/destinations")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DestinationController {
 
     private final DestinationService destinationService;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @GetMapping(path = "/api/v1/destinations")
+    @GetMapping
     public List<DestinationDTO> listDestinations(){
         return destinationService.findAll();
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @GetMapping(path = "/api/v1/destinations/{cod}")
+    @GetMapping(path = "/{cod}")
     public DestinationDTO listDestinationById(@PathVariable Long cod ) throws NotFoundException {
         return destinationService.findById(cod);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/api/v1/destinations")
+    @PostMapping
     public DestinationDTO saveDestination(@RequestBody @Valid DestinationDTO destinationDTO) throws NotFoundException {
         return destinationService.save(destinationDTO);
 
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping(path = "/{id}")
+    public DestinationDTO updateDestination(@RequestBody @Valid DestinationDTO destinationDTO, @PathVariable Long id) throws NotFoundException {
+        destinationDTO.setId(id);
+        return destinationService.update(destinationDTO);
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(path = "/api/v1/destinations/{id}")
+    @DeleteMapping(path = "/{id}")
     public void deleteDestination(@PathVariable Long id) throws NotFoundException {
         destinationService.delete(id);
     }

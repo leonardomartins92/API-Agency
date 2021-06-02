@@ -40,6 +40,11 @@ public class DestinationService {
         destinationRepository.deleteById(id);
     }
 
+    public DestinationDTO update(DestinationDTO destinationDTO) throws NotFoundException {
+        verifyIfExists(destinationDTO.getId());
+        return save(destinationDTO);
+    }
+
     private Destination verifyIfExists(Long id) throws NotFoundException {
         return destinationRepository.findById(id)
                 .orElseThrow(()->new NotFoundException(id));

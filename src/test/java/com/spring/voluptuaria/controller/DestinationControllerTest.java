@@ -1,6 +1,8 @@
 package com.spring.voluptuaria.controller;
 
 import com.spring.voluptuaria.builder.DestinationDTOCreator;
+import com.spring.voluptuaria.builder.DestinationDTOCreator;
+import com.spring.voluptuaria.dto.DestinationDTO;
 import com.spring.voluptuaria.dto.DestinationDTO;
 import com.spring.voluptuaria.exception.NotFoundException;
 import com.spring.voluptuaria.service.DestinationService;
@@ -24,6 +26,7 @@ import static com.spring.voluptuaria.util.JsonConvertionUtils.asJsonString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,6 +79,35 @@ class DestinationControllerTest {
                 .content(asJsonString(destinationDTO)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @DisplayName("Update Destination when required params are valid ")
+    void updateDestinationWhenIdIsValidAndVariablesArePresent_WithSuccess() throws Exception {
+        DestinationDTO destinationDTO = DestinationDTOCreator.buildDestination();
+
+        when(destinationServiceMock.update(destinationDTO))
+                .thenReturn(destinationDTO);
+
+        mockMvc.perform(put(DESTINATION_API_URL_PATH + "/" + destinationDTO.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(destinationDTO)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.start", is(destinationDTO.getStart())))
+                .andExpect(jsonPath("$.location", is(destinationDTO.getLocation())));
+    }
+
+    @Test
+    @DisplayName("Try to Update Destination without all required fields throw Exception")
+    void updateDestinationWhenAllRequiredFieldIsNotPresent_ThrowException() throws Exception {
+        DestinationDTO destinationDTO = DestinationDTOCreator.buildDestination();
+        destinationDTO.setStart(null);
+
+        mockMvc.perform(put(DESTINATION_API_URL_PATH + "/" + INVALID_DESTINATION_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(destinationDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @DisplayName("List All destinations with success")
     @Test

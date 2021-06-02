@@ -40,6 +40,11 @@ public class CompanyService {
         companyRepository.deleteById(id);
     }
 
+    public CompanyDTO update(CompanyDTO companyDTO) throws NotFoundException {
+        verifyIfExists(companyDTO.getId());
+        return save(companyDTO);
+    }
+
     private Company verifyIfExists(Long id) throws NotFoundException {
         return companyRepository.findById(id)
                 .orElseThrow(()->new NotFoundException(id));

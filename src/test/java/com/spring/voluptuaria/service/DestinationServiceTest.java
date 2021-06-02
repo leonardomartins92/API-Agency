@@ -1,15 +1,18 @@
 package com.spring.voluptuaria.service;
 
+import com.spring.voluptuaria.builder.DestinationDTOCreator;
 import com.spring.voluptuaria.dto.DestinationDTO;
 import com.spring.voluptuaria.exception.NotFoundException;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Destination;
 import com.spring.voluptuaria.repository.DestinationRepository;
-import com.spring.voluptuaria.builder.DestinationDTOCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -32,10 +35,11 @@ class DestinationServiceTest {
     private DestinationRepository destinationRepositoryMock;
 
     private final IMapper mapper = IMapper.INSTANCE;
+    private static final long INVALID_DESTINATION_ID = 2L;
 
     @DisplayName("Save destination with success")
     @Test
-    void saveDestinationIfAllArgumentsArePresent() throws NotFoundException {
+    void saveDestinationIfAllRequiredArgumentsArePresent_WithSuccess() throws NotFoundException {
         DestinationDTO destinationPassed = DestinationDTOCreator.buildDestination();
         Destination destinationToBeSaved = mapper.destinationToModel(destinationPassed);
 
@@ -51,7 +55,7 @@ class DestinationServiceTest {
 
     @DisplayName("List all destinations with success")
     @Test
-    void listAll_Destinations_ComSucesso(){
+    void listAllDestinations_WithSuccess(){
       List<Destination> destinations = List.of(mapper.destinationToModel(DestinationDTOCreator.buildDestination()));
 
       Mockito.when(destinationRepositoryMock.findAll())
@@ -64,8 +68,8 @@ class DestinationServiceTest {
     }
 
     @Test
-    @DisplayName("List Destination By id")
-    void getDestination_ById_WithSuccess() throws NotFoundException {
+    @DisplayName("List Destination with a valid id")
+    void getDestinationById_WithSuccess() throws NotFoundException {
         String expectedName = DestinationDTOCreator.buildDestination().getLocation();
 
         Mockito.when(destinationRepositoryMock.findById(ArgumentMatchers.any()))
@@ -78,15 +82,46 @@ class DestinationServiceTest {
     }
 
     @Test
-    @DisplayName("Not Found Destination With Id")
-    void destinationNotFoundWithID_ThrownException()  {
+    @DisplayName("Not Found Destination With an invalid Id")
+    void destinationNotFoundWithInvalidId_ThrownException()  {
 
         assertThrows(NotFoundException.class, ()-> destinationService.findById(ArgumentMatchers.any()));
     }
 
     @Test
+    @DisplayName("Update Destination with a valid id")
+    void updateDestinationWithAValidId_WithSuccess() throws NotFoundException {
+        DestinationDTO destinationSaved = DestinationDTOCreator.buildDestination();
+        DestinationDTO destinationToUpdate = destinationSaved;
+        destinationToUpdate.setLocation("Queenstown");
+
+        when(destinationRepositoryMock.findById(destinationSaved.getId()))
+                .thenReturn(Optional.of(mapper.destinationToModel(destinationSaved)));
+
+        when(destinationRepositoryMock.save(mapper.destinationToModel(destinationToUpdate)))
+                .thenReturn(mapper.destinationToModel(destinationToUpdate));
+
+        DestinationDTO destinationUpdated = destinationService.update(destinationToUpdate);
+
+        assertThat(destinationToUpdate.getLocation(), is(equalTo(destinationUpdated.getLocation())));
+        assertThat(destinationToUpdate.getId(), is(equalTo(destinationUpdated.getId())));
+    }
+
+    @Test
+    @DisplayName("Update Destination with a invalid id throws an exception")
+    void updateDestinationWithInvalidId_ThrowException() {
+        DestinationDTO destinationToUpdate = DestinationDTOCreator.buildDestination();
+        destinationToUpdate.setId(INVALID_DESTINATION_ID);
+
+        when(destinationRepositoryMock.findById(destinationToUpdate.getId()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class , ()-> destinationService.findById(INVALID_DESTINATION_ID));
+    }
+
+    @Test
     @DisplayName("Delete Destination with a valid Id")
-    void deleteDestinationWhenAValidIdIsPassed() throws NotFoundException {
+    void deleteDestinationWhenAValidIdIsPassed_WithSuccess() throws NotFoundException {
 
         Destination expectedDeletedDestination = mapper.destinationToModel(DestinationDTOCreator.buildDestination());
 

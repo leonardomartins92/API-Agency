@@ -38,7 +38,7 @@ class ClientServiceTest {
 
     @DisplayName("Save client with success")
     @Test
-    void saveClientIfAllArgumentsArePresent() throws NotFoundException {
+    void saveClientIfAllRequiredArgumentsArePresent_WithSuccess() throws NotFoundException {
 
         ClientDTO clientPassed = ClientDTOCreator.buildClient();
         Client clientToBeSaved = mapper.clientToModel(clientPassed);
@@ -54,7 +54,7 @@ class ClientServiceTest {
 
     @DisplayName("List all clients with success")
     @Test
-    void listAll_Clientes_ComSucesso(){
+    void listAllClients_WithSuccess(){
 
       List<Client> clients = List.of(mapper.clientToModel(ClientDTOCreator.buildClient()));
 
@@ -68,7 +68,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("List Client with valid id")
-    void getCliente_ById_WithSuccess() throws NotFoundException {
+    void getClienteById_WithSuccess() throws NotFoundException {
 
         String expectedName = ClientDTOCreator.buildClient().getName();
 
@@ -82,9 +82,40 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("Not Found Client With Invalid Id")
-    void clientNotFoundWithID_ThrownException() throws NotFoundException {
+    void clientNotFoundWithID_ThrownException() {
 
         when(clientRepositoryMock.findById(INVALID_CLIENT_ID)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class , ()-> clientService.findById(INVALID_CLIENT_ID));
+    }
+
+    @Test
+    @DisplayName("Update Client with a valid id")
+    void updateClientWhenAllRequiredParametersArePresent_WithSuccess() throws NotFoundException {
+        ClientDTO clientSaved = ClientDTOCreator.buildClient();
+        ClientDTO clientToUpdate = clientSaved;
+        clientToUpdate.setCpf("9999");
+
+        when(clientRepositoryMock.findById(clientSaved.getId()))
+                .thenReturn(Optional.of(mapper.clientToModel(clientSaved)));
+
+        when(clientRepositoryMock.save(mapper.clientToModel(clientToUpdate)))
+                .thenReturn(mapper.clientToModel(clientToUpdate));
+
+        ClientDTO clientUpdated = clientService.update(clientToUpdate);
+
+        assertThat(clientToUpdate.getCpf(), is(equalTo(clientUpdated.getCpf())));
+        assertThat(clientToUpdate.getId(), is(equalTo(clientUpdated.getId())));
+    }
+
+    @Test
+    @DisplayName("Update Client with a invalid id throws an exception")
+    void updateClientWithInvalidId_ThrowException() {
+        ClientDTO clientToUpdate = ClientDTOCreator.buildClient();
+        clientToUpdate.setId(INVALID_CLIENT_ID);
+
+        when(clientRepositoryMock.findById(clientToUpdate.getId()))
+                .thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class , ()-> clientService.findById(INVALID_CLIENT_ID));
     }

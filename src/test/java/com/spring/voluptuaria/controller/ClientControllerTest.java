@@ -24,6 +24,7 @@ import static com.spring.voluptuaria.util.JsonConvertionUtils.asJsonString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,6 +77,35 @@ class ClientControllerTest {
                 .content(asJsonString(clientDTO)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @DisplayName("Update Client when required params are valid ")
+    void updateClientWhenIdIsValidAndVariablesArePresent_WithSuccess() throws Exception {
+        ClientDTO clientDTO = ClientDTOCreator.buildClient();
+
+        when(clientServiceMock.update(clientDTO))
+                .thenReturn(clientDTO);
+
+        mockMvc.perform(put(CLIENT_API_URL_PATH + "/" + clientDTO.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(clientDTO)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.name", is(clientDTO.getName())))
+                .andExpect(jsonPath("$.cpf", is(clientDTO.getCpf())));
+    }
+
+    @Test
+    @DisplayName("Try to Update Client without all required fields throw Exception")
+    void updateClientWhenAllRequiredFieldIsNotPresent_ThrowException() throws Exception {
+        ClientDTO clientDTO = ClientDTOCreator.buildClient();
+        clientDTO.setCpf(null);
+
+        mockMvc.perform(put(CLIENT_API_URL_PATH + "/" + INVALID_CLIENT_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(clientDTO)))
+                .andExpect(status().isBadRequest());
+        }
+
 
     @DisplayName("List All clients with success")
     @Test

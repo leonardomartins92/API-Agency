@@ -40,8 +40,14 @@ public class ClientService {
         clientRepository.deleteById(id);
     }
 
+    public ClientDTO update(ClientDTO clientDTO) throws NotFoundException {
+        verifyIfExists(clientDTO.getId());
+        return save(clientDTO);
+    }
+
     private Client verifyIfExists(Long id) throws NotFoundException {
         return clientRepository.findById(id)
                 .orElseThrow(()->new NotFoundException(id));
     }
+
 }

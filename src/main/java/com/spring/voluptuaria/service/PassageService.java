@@ -40,6 +40,11 @@ public class PassageService {
         passageRepository.deleteById(id);
     }
 
+    public PassageDTO update(PassageDTO passageDTO) throws NotFoundException {
+        verifyIfExists(passageDTO.getId());
+        return save(passageDTO);
+    }
+
     private Passage verifyIfExists(Long id) throws NotFoundException {
         return passageRepository.findById(id)
                 .orElseThrow(()->new NotFoundException(id));

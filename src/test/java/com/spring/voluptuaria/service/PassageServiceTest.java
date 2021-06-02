@@ -1,15 +1,18 @@
 package com.spring.voluptuaria.service;
 
+import com.spring.voluptuaria.builder.PassageDTOCreator;
 import com.spring.voluptuaria.dto.PassageDTO;
 import com.spring.voluptuaria.exception.NotFoundException;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Passage;
 import com.spring.voluptuaria.repository.PassageRepository;
-import com.spring.voluptuaria.builder.PassageDTOCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -32,10 +35,11 @@ class PassageServiceTest {
     private PassageRepository passageRepositoryMock;
 
     private final IMapper mapper = IMapper.INSTANCE;
+    private static final long INVALID_PASSAGE_ID = 2L;
 
     @DisplayName("Save passage with success")
     @Test
-    void savePassageIfAllArgumentsArePresent() throws NotFoundException {
+    void savePassageIfAllArgumentsArePresent_WithSuccess() throws NotFoundException {
         PassageDTO passagePassed = PassageDTOCreator.buildPassage();
         Passage passageToBeSaved = mapper.passageToModel(passagePassed);
 
@@ -51,7 +55,7 @@ class PassageServiceTest {
 
     @DisplayName("List all passages with success")
     @Test
-    void listAll_Passages_ComSucesso(){
+    void listAllPassages_WithSuccess(){
       List<Passage> passages = List.of(mapper.passageToModel(PassageDTOCreator.buildPassage()));
 
       Mockito.when(passageRepositoryMock.findAll())
@@ -64,8 +68,8 @@ class PassageServiceTest {
     }
 
     @Test
-    @DisplayName("List Passage By id")
-    void getPassage_ById_WithSuccess() throws NotFoundException {
+    @DisplayName("List Passage with a valid id")
+    void getPassageById_WithSuccess() throws NotFoundException {
         String expectedName = PassageDTOCreator.buildPassage().getDestination();
 
         Mockito.when(passageRepositoryMock.findById(ArgumentMatchers.any()))
@@ -74,7 +78,6 @@ class PassageServiceTest {
         var passage = passageService.findById(ArgumentMatchers.any());
 
         assertThat(passage.getDestination(), is(equalTo(expectedName)));
-
     }
 
     @Test
@@ -85,8 +88,39 @@ class PassageServiceTest {
     }
 
     @Test
+    @DisplayName("Update Passage with a valid id")
+    void updatePassageWithAValidId_WithSuccess() throws NotFoundException {
+        PassageDTO passageSaved = PassageDTOCreator.buildPassage();
+        PassageDTO passageToUpdate = passageSaved;
+        passageToUpdate.setDestination("Queenstown");
+
+        when(passageRepositoryMock.findById(passageSaved.getId()))
+                .thenReturn(Optional.of(mapper.passageToModel(passageSaved)));
+
+        when(passageRepositoryMock.save(mapper.passageToModel(passageToUpdate)))
+                .thenReturn(mapper.passageToModel(passageToUpdate));
+
+        PassageDTO passageUpdated = passageService.update(passageToUpdate);
+
+        assertThat(passageToUpdate.getDestination(), is(equalTo(passageUpdated.getDestination())));
+        assertThat(passageToUpdate.getId(), is(equalTo(passageUpdated.getId())));
+    }
+
+    @Test
+    @DisplayName("Update Passage with a invalid id throws an exception")
+    void updatePassageWithInvalidId_ThrowException() {
+        PassageDTO passageToUpdate = PassageDTOCreator.buildPassage();
+        passageToUpdate.setId(INVALID_PASSAGE_ID);
+
+        when(passageRepositoryMock.findById(passageToUpdate.getId()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class , ()-> passageService.findById(INVALID_PASSAGE_ID));
+    }
+
+    @Test
     @DisplayName("Delete Passage with a valid Id")
-    void deletePassageWhenAValidIdIsPassed() throws NotFoundException {
+    void deletePassageWhenAValidIdIsPassed_WithSuccess() throws NotFoundException {
 
         Passage expectedDeletedPassage = mapper.passageToModel(PassageDTOCreator.buildPassage());
 

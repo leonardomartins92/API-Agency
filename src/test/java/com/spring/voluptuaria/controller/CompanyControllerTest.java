@@ -24,6 +24,7 @@ import static com.spring.voluptuaria.util.JsonConvertionUtils.asJsonString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -119,6 +120,35 @@ class CompanyControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    @DisplayName("Update Company when required params are valid ")
+    void updateCompanyWhenIdIsValidAndVariablesArePresent_WithSuccess() throws Exception {
+        CompanyDTO companyDTO = CompanyDTOCreator.buildCompany();
+
+        when(companyServiceMock.update(companyDTO))
+                .thenReturn(companyDTO);
+
+        mockMvc.perform(put(COMPANY_API_URL_PATH + "/" + companyDTO.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(companyDTO)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.name", is(companyDTO.getName())))
+                .andExpect(jsonPath("$.cnpj", is(companyDTO.getCnpj())));
+    }
+
+    @Test
+    @DisplayName("Try to Update Company without all required fields throw Exception")
+    void updateCompanyWhenAllRequiredFieldIsNotPresent_ThrowException() throws Exception {
+        CompanyDTO companyDTO = CompanyDTOCreator.buildCompany();
+        companyDTO.setCnpj(null);
+
+        mockMvc.perform(put(COMPANY_API_URL_PATH + "/" + INVALID_COMPANY_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(companyDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @Test
     @DisplayName("Delete Company with success")

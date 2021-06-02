@@ -24,6 +24,7 @@ import static com.spring.voluptuaria.util.JsonConvertionUtils.asJsonString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,6 +77,35 @@ class PassageControllerTest {
                 .content(asJsonString(passageDTO)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @DisplayName("Update Passage when required params are valid ")
+    void updatePassageWhenIdIsValidAndVariablesArePresent_WithSuccess() throws Exception {
+        PassageDTO passageDTO = PassageDTOCreator.buildPassage();
+
+        when(passageServiceMock.update(passageDTO))
+                .thenReturn(passageDTO);
+
+        mockMvc.perform(put(PASSAGE_API_URL_PATH + "/" + passageDTO.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(passageDTO)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.destination", is(passageDTO.getDestination())))
+                .andExpect(jsonPath("$.origin", is(passageDTO.getOrigin())));
+    }
+
+    @Test
+    @DisplayName("Try to Update Passage without all required fields throw Exception")
+    void updatePassageWhenAllRequiredFieldIsNotPresent_ThrowException() throws Exception {
+        PassageDTO passageDTO = PassageDTOCreator.buildPassage();
+        passageDTO.setDestination(null);
+
+        mockMvc.perform(put(PASSAGE_API_URL_PATH + "/" + INVALID_PASSAGE_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(passageDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @DisplayName("List All passages with success")
     @Test
