@@ -1,10 +1,9 @@
 package com.spring.voluptuaria.repository;
 
+import com.spring.voluptuaria.builder.CompanyDTOCreator;
 import com.spring.voluptuaria.dto.CompanyDTO;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Company;
-import com.spring.voluptuaria.util.CompanyDTOCreator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @DisplayName("Company Repository Test")

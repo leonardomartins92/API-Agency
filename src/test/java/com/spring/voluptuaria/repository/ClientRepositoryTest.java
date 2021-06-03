@@ -1,9 +1,9 @@
 package com.spring.voluptuaria.repository;
 
+import com.spring.voluptuaria.builder.ClientDTOCreator;
 import com.spring.voluptuaria.dto.ClientDTO;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Client;
-import com.spring.voluptuaria.util.ClientDTOCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ class ClientRepositoryTest {
     @Test
     @DisplayName("Save client  with success")
     void saveClientWithSuccessWhenAttributesArePresent()  {
-        ClientDTO clientToSave = ClientDTOCreator.buildCliente();
+        ClientDTO clientToSave = ClientDTOCreator.buildClient();
         Client clientSaved = mapper.clientToModel(clientToSave);
 
         var savedClient = clientRepository.save(clientSaved);
@@ -40,7 +40,7 @@ class ClientRepositoryTest {
     @Test
     @DisplayName("Delete client with success")
     void delete_Cliente_comSucesso() {
-        ClientDTO clientToSave = ClientDTOCreator.buildCliente();
+        ClientDTO clientToSave = ClientDTOCreator.buildClient();
         Client clientSaved = mapper.clientToModel(clientToSave);
 
         clientRepository.delete(clientSaved);
@@ -53,7 +53,7 @@ class ClientRepositoryTest {
     @Test
     @DisplayName("Find client by id")
     void findById_Cliente_ComSucesso()  {
-        ClientDTO clientToSave = ClientDTOCreator.buildCliente();
+        ClientDTO clientToSave = ClientDTOCreator.buildClient();
         Client clientSaved = clientRepository.save(mapper.clientToModel(clientToSave));
 
         Optional<Client> foundClient = clientRepository.findById(clientSaved.getId());
@@ -65,7 +65,7 @@ class ClientRepositoryTest {
     @Test
     @DisplayName("find all clients ")
     void findAll_Clientes_ComSucesso() {
-        ClientDTO clientToSave = ClientDTOCreator.buildCliente();
+        ClientDTO clientToSave = ClientDTOCreator.buildClient();
         Client clientSaved = clientRepository.save(mapper.clientToModel(clientToSave));
 
         List<Client> foundClients = clientRepository.findAll();

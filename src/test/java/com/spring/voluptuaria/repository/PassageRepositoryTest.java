@@ -1,9 +1,9 @@
 package com.spring.voluptuaria.repository;
 
+import com.spring.voluptuaria.builder.PassageDTOCreator;
 import com.spring.voluptuaria.dto.PassageDTO;
 import com.spring.voluptuaria.mapper.IMapper;
 import com.spring.voluptuaria.model.Passage;
-import com.spring.voluptuaria.util.PassageDTOCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @DisplayName("Passage Repository Test")
