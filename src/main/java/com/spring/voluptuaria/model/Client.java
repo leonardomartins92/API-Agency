@@ -1,7 +1,6 @@
 package com.spring.voluptuaria.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,10 +16,10 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 15)
     private String cpf;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 45)
     private String name;
 
     @Column(nullable = false)

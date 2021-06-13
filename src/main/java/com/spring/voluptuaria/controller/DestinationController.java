@@ -7,46 +7,46 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "/api/v1/destinations")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class DestinationController {
+public class DestinationController implements Controllers<DestinationDTO> {
 
     private final DestinationService destinationService;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping
-    public List<DestinationDTO> listDestinations(){
+    public List<DestinationDTO> listAll(){
         return destinationService.findAll();
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(path = "/{cod}")
-    public DestinationDTO listDestinationById(@PathVariable Long cod ) throws NotFoundException {
+    public DestinationDTO listById(@PathVariable Long cod ) throws NotFoundException {
         return destinationService.findById(cod);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public DestinationDTO saveDestination(@RequestBody @Valid DestinationDTO destinationDTO) throws NotFoundException {
+    public DestinationDTO save(@RequestBody @Valid DestinationDTO destinationDTO) throws NotFoundException {
         return destinationService.save(destinationDTO);
 
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping(path = "/{id}")
-    public DestinationDTO updateDestination(@RequestBody @Valid DestinationDTO destinationDTO, @PathVariable Long id) throws NotFoundException {
+    public DestinationDTO update(@RequestBody @Valid DestinationDTO destinationDTO, @PathVariable Long id) throws NotFoundException {
         destinationDTO.setId(id);
         return destinationService.update(destinationDTO);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{id}")
-    public void deleteDestination(@PathVariable Long id) throws NotFoundException {
+    public void delete(@PathVariable Long id) throws NotFoundException {
         destinationService.delete(id);
     }
 }

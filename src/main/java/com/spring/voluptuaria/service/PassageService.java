@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
-public class PassageService {
+public class PassageService implements Services<PassageDTO> {
 
     private final PassageRepository passageRepository;
     private final IMapper mapper = IMapper.INSTANCE;
